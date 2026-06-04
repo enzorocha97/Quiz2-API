@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">OpenFood Quiz</string>
+    <string name="search_hint">Buscar comida...</string>
+    <string name="results_title">Resultados</string>
+    <string name="explore_title">Explorar Productos</string>
+    <string name="verifier_title">Verificador de Alérgenos</string>
+    <string name="barcode_hint">Código de barras (EAN)</string>
+    <string name="consult_button">Consultar</string>
+    <string name="nav_explore">Explorar</string>
+    <string name="nav_verifier">Verificador</string>
+    <string name="no_product_found">Producto no encontrado</string>
+    <string name="network_error">Error de red o conexión</string>
+    <string name="error_loading_details">Error al cargar detalles</string>
+    <string name="product_code_format">Código: %1$s</string>
+    <string name="dialog_verified_msg">Marca: %1$s\n\nAllergens: %2$s\n\nEste producto ha sido verificado en la base de datos.</string>
+    <string name="dialog_ok">Entendido</string>
+</resources>
