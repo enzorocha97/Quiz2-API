@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.quiz2.databinding.ActivityMainBinding;
+import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +43,19 @@ public class MainActivity extends AppCompatActivity {
         setupRecyclerView();
         setupSearchView();
         setupNavigation();
-        
+        setupClickListeners();
+        loadHomeImage();
+    }
+
+    private void loadHomeImage() {
+        Picasso.get()
+                .load("https://cdn-icons-png.flaticon.com/512/12401/12401714.png")
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .error(android.R.drawable.stat_notify_error)
+                .into(binding.imgHome);
+    }
+
+    private void setupClickListeners() {
         binding.btnCheckBarcode.setOnClickListener(v -> {
             if (binding.etBarcode.getText() != null) {
                 String code = binding.etBarcode.getText().toString().trim();
@@ -51,24 +64,56 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        View.OnClickListener backToHome = v -> {
+            showHome();
+            binding.bottomNavigation.setSelectedItemId(R.id.nav_home);
+        };
+        binding.btnBackFromSearch.setOnClickListener(backToHome);
+        binding.btnBackFromBarcode.setOnClickListener(backToHome);
     }
 
     private void setupNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.nav_search) {
-                binding.searchCard.setVisibility(View.VISIBLE);
-                binding.barcodeCard.setVisibility(View.GONE);
-                binding.titleResults.setText(R.string.explore_title);
+            if (id == R.id.nav_home) {
+                showHome();
+                return true;
+            } else if (id == R.id.nav_search) {
+                showSearch();
                 return true;
             } else if (id == R.id.nav_barcode) {
-                binding.searchCard.setVisibility(View.GONE);
-                binding.barcodeCard.setVisibility(View.VISIBLE);
-                binding.titleResults.setText(R.string.verifier_title);
+                showBarcodeVerifier();
                 return true;
             }
             return false;
         });
+    }
+
+    private void showHome() {
+        binding.homeLayout.setVisibility(View.VISIBLE);
+        binding.searchCard.setVisibility(View.GONE);
+        binding.barcodeCard.setVisibility(View.GONE);
+        binding.titleResults.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.GONE);
+    }
+
+    private void showSearch() {
+        binding.homeLayout.setVisibility(View.GONE);
+        binding.searchCard.setVisibility(View.VISIBLE);
+        binding.barcodeCard.setVisibility(View.GONE);
+        binding.titleResults.setVisibility(View.VISIBLE);
+        binding.recyclerView.setVisibility(View.VISIBLE);
+        binding.titleResults.setText(R.string.explore_title);
+    }
+
+    private void showBarcodeVerifier() {
+        binding.homeLayout.setVisibility(View.GONE);
+        binding.searchCard.setVisibility(View.GONE);
+        binding.barcodeCard.setVisibility(View.VISIBLE);
+        binding.titleResults.setVisibility(View.VISIBLE);
+        binding.recyclerView.setVisibility(View.VISIBLE);
+        binding.titleResults.setText(R.string.verifier_title);
     }
 
     private void setupRetrofit() {
